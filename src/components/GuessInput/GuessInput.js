@@ -1,7 +1,8 @@
 import React from "react"
 import GuessHistory from "../GuessHistory/GuessHistory"
+import { checkGuess } from "../../game-helpers"
 
-function GuessInput() {
+function GuessInput({ answer }) {
   const [guess, setGuess] = React.useState("")
   const [guessHistory, setGuessHistory] = React.useState([])
   const handleSubmitGuess = (event) => {
@@ -11,7 +12,7 @@ function GuessInput() {
 
     const nextGuessHistory = [...guessHistory]
     nextGuessHistory.push({
-      value: guess,
+      result: checkGuess(guess, answer),
       key: crypto.randomUUID(),
     })
     setGuessHistory(nextGuessHistory)

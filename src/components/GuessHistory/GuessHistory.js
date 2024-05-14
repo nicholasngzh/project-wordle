@@ -5,7 +5,7 @@ import { NUM_OF_GUESSES_ALLOWED } from "../../constants"
 function GuessHistory({ guessHistory }) {
   const getCharFromHistory = (row, col) => {
     if (row < guessHistory.length) {
-      return guessHistory[row].value[col]
+      return guessHistory[row].result[col]
     }
     return ""
   }
@@ -15,7 +15,9 @@ function GuessHistory({ guessHistory }) {
       {range(0, NUM_OF_GUESSES_ALLOWED).map((row) => (
         <p class="guess" key={row}>
           {range(0, 5).map((col) => (
-            <span class="cell">{getCharFromHistory(row, col)}</span>
+            <span class={`cell ${getCharFromHistory(row, col).status}`}>
+              {getCharFromHistory(row, col).letter}
+            </span>
           ))}
         </p>
       ))}

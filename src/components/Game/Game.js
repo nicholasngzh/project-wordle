@@ -12,7 +12,7 @@ console.info({ answer })
 function Game() {
   return (
     <>
-      <GuessInput />
+      <GuessInput answer={answer} />
     </>
   )
 }
