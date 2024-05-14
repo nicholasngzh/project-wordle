@@ -1,6 +1,7 @@
 import React from "react"
 import GuessHistory from "../GuessHistory/GuessHistory"
 import { checkGuess } from "../../game-helpers"
+import { NUM_OF_GUESSES_ALLOWED } from "../../constants"
 
 function GuessInput({ answer }) {
   const [guess, setGuess] = React.useState("")
@@ -12,6 +13,7 @@ function GuessInput({ answer }) {
 
     const nextGuessHistory = [...guessHistory]
     nextGuessHistory.push({
+      value: guess,
       result: checkGuess(guess, answer),
       key: crypto.randomUUID(),
     })
@@ -20,24 +22,43 @@ function GuessInput({ answer }) {
     setGuess("")
   }
 
+  const foundCorrectAnswer = guessHistory.find(
+    (guess) => guess.value === answer
+  )
+
   return (
     <>
       <div class="guess-results">
         <GuessHistory guessHistory={guessHistory} />
       </div>
-      <form class="guess-input-wrapper" onSubmit={handleSubmitGuess}>
-        <label for="guess-input">Enter guess:</label>
-        <input
-          id="guess-input"
-          type="text"
-          value={guess}
-          pattern="[a-zA-Z]{5}"
-          title="5 letter word"
-          onChange={(event) => {
-            setGuess(event.target.value.toUpperCase())
-          }}
-        />
-      </form>
+      {foundCorrectAnswer ? (
+        <div class="happy banner">
+          <p>
+            <strong>Congratulations!</strong> Got it in
+            <strong> {guessHistory.length} guesses</strong>.
+          </p>
+        </div>
+      ) : guessHistory.length >= NUM_OF_GUESSES_ALLOWED ? (
+        <div class="sad banner">
+          <p>
+            Sorry, the correct answer is <strong>{answer}</strong>.
+          </p>
+        </div>
+      ) : (
+        <form class="guess-input-wrapper" onSubmit={handleSubmitGuess}>
+          <label for="guess-input">Enter guess:</label>
+          <input
+            id="guess-input"
+            type="text"
+            value={guess}
+            pattern="[a-zA-Z]{5}"
+            title="5 letter word"
+            onChange={(event) => {
+              setGuess(event.target.value.toUpperCase())
+            }}
+          />
+        </form>
+      )}
     </>
   )
 }

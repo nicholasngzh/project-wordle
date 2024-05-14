@@ -15,7 +15,10 @@ function GuessHistory({ guessHistory }) {
       {range(0, NUM_OF_GUESSES_ALLOWED).map((row) => (
         <p class="guess" key={row}>
           {range(0, 5).map((col) => (
-            <span class={`cell ${getCharFromHistory(row, col).status}`}>
+            <span
+              key={`${row}=${col}`}
+              class={`cell ${getCharFromHistory(row, col).status}`}
+            >
               {getCharFromHistory(row, col).letter}
             </span>
           ))}
