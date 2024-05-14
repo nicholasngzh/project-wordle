@@ -3,7 +3,7 @@ import GuessHistory from "../GuessHistory/GuessHistory"
 import { checkGuess } from "../../game-helpers"
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants"
 
-function GuessInput({ answer }) {
+function GuessInput({ answer, generateNewAnswer }) {
   const [guess, setGuess] = React.useState("")
   const [guessHistory, setGuessHistory] = React.useState([])
   const handleSubmitGuess = (event) => {
@@ -26,6 +26,12 @@ function GuessInput({ answer }) {
     (guess) => guess.value === answer
   )
 
+  const handleRestart = () => {
+    setGuess("")
+    setGuessHistory([])
+    generateNewAnswer()
+  }
+
   return (
     <>
       <div class="guess-results">
@@ -37,12 +43,14 @@ function GuessInput({ answer }) {
             <strong>Congratulations!</strong> Got it in
             <strong> {guessHistory.length} guesses</strong>.
           </p>
+          <button onClick={handleRestart}>Click here to Restart</button>
         </div>
       ) : guessHistory.length >= NUM_OF_GUESSES_ALLOWED ? (
         <div class="sad banner">
           <p>
             Sorry, the correct answer is <strong>{answer}</strong>.
           </p>
+          <button onClick={handleRestart}>Click here to Restart</button>
         </div>
       ) : (
         <form class="guess-input-wrapper" onSubmit={handleSubmitGuess}>
